@@ -19,12 +19,20 @@
     <!-- Product and plugin compatibility requirements.
          Read more: https://plugins.jetbrains.com/docs/intellij/plugin-compatibility.html -->
     <depends>com.intellij.modules.platform</depends>
-    <depends optional="true" config-file="ru.itmo.control-fun-graph-intellij-rider.xml">com.intellij.modules.rider
-    </depends>
+    <depends optional="true" config-file="ru.itmo.control-fun-graph-intellij-rider.xml">com.intellij.modules.rider</depends>
 
     <!-- Extension points defined by the plugin.
          Read more: https://plugins.jetbrains.com/docs/intellij/plugin-extension-points.html -->
     <extensions defaultExtensionNs="com.intellij">
     </extensions>
 
+    <actions>
+        <action
+            id="ru.itmo.control-fun-graph-intellij.show-cfg"
+            class="ru.itmo.controlfungraphintellij.actions.ShowCfg"
+            text="Show CFG">
+
+            <add-to-group group-id="EditorPopupMenu"/>
+        </action>
+    </actions>
 </idea-plugin>

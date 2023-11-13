@@ -7,7 +7,7 @@ plugins {
 group = "ru.itmo"
 version = "1.0-SNAPSHOT"
 
-val ideType: String = System.getenv("cfg_ide_type") ?: "idea"
+val ideType: String = System.getenv("cfg_ide_type") ?: "rider"
 
 repositories {
     mavenCentral()
