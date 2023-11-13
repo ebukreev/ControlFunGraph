@@ -7,12 +7,12 @@ import guru.nidi.graphviz.model.MutableNode
 import guru.nidi.graphviz.toGraphviz
 import kastree.ast.Node
 
-class CfgBuilder(private val functionAst: Node.Decl.Func) {
+internal class CfgBuilder(private val functionAst: Node.Decl.Func) {
 
     private val graph = graph(directed = true)
     private var currentNode: MutableNode? = toMutableNode(functionAst).add(Shape.ELLIPSE).also { graph.add(it) }
 
-    fun build(): Graphviz {
+    internal fun build(): Graphviz {
         buildFunction(functionAst)
         return graph.toGraphviz()
     }
@@ -312,7 +312,7 @@ class CfgBuilder(private val functionAst: Node.Decl.Func) {
             is Node.Expr.While -> mutNode.add(Shape.DIAMOND)
             is Node.Expr.When.Cond -> mutNode.add(Shape.DIAMOND)
             else -> mutNode.add(Shape.BOX)
-        }
+        }.also { it.attrs().add("comment", (node.tag as Pair<*, *>).first.toString()) }
     }
 
     private fun typeToString(node: Node.Type?): String {
