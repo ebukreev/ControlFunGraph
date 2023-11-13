@@ -32,14 +32,15 @@ class ShowCfg : AnAction() {
     }
 
     private fun checkLanguageIsSupported(languages: Language): Boolean {
-        val supportedLangs = listOf("CSharpLanguage")
+        val supportedLangs = listOf("CSharpLanguage", "ECMA6Language")
 
         return supportedLangs.any { lang -> languages::class.java.name.contains(lang) }
     }
 
     private fun getParentMethodOrFunction(element: PsiElement): PsiElement? {
         val targetClassNames = listOf(
-            "CSharpMethodDeclaration"
+            "CSharpMethodDeclaration",
+            "JSFunction"
         )
 
         var parent = element.parent

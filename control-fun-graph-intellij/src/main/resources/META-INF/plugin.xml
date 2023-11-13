@@ -20,7 +20,7 @@
          Read more: https://plugins.jetbrains.com/docs/intellij/plugin-compatibility.html -->
     <depends>com.intellij.modules.platform</depends>
     <depends optional="true" config-file="ru.itmo.control-fun-graph-intellij-rider.xml">com.intellij.modules.rider</depends>
-
+    <depends optional="true" config-file="ru.itmo.control-fun-graph-intellij-js.xml">JavaScript</depends>
     <!-- Extension points defined by the plugin.
          Read more: https://plugins.jetbrains.com/docs/intellij/plugin-extension-points.html -->
     <extensions defaultExtensionNs="com.intellij">

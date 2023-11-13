@@ -7,7 +7,7 @@ plugins {
 group = "ru.itmo"
 version = "1.0-SNAPSHOT"
 
-val ideType: String = System.getenv("cfg_ide_type") ?: "rider"
+val ideType: String = System.getenv("cfg_ide_type") ?: "idea"
 
 repositories {
     mavenCentral()
@@ -25,14 +25,14 @@ intellij {
         }
         "idea" -> {
             version.set("2023.2.5")
-            type.set("IC")
+            type.set("IU")
         }
         else -> error("unknown cfg_ide_type=$ideType")
     }
     this.downloadSources.set(true)
 
 
-    plugins.set(listOf(/* Plugin Dependencies */))
+    plugins.set(listOf("JavaScript"))
 }
 
 tasks {
