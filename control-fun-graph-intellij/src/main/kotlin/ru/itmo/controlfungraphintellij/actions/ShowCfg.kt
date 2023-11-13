@@ -32,7 +32,7 @@ class ShowCfg : AnAction() {
     }
 
     private fun checkLanguageIsSupported(languages: Language): Boolean {
-        val supportedLangs = listOf("CSharpLanguage", "ECMA6Language", "kotlin")
+        val supportedLangs = listOf("CSharpLanguage", "ECMA6Language", "kotlin", "rust")
 
         return supportedLangs.any { lang -> languages::class.java.name.contains(lang) }
     }
@@ -41,7 +41,8 @@ class ShowCfg : AnAction() {
         val targetClassNames = listOf(
             "CSharpMethodDeclaration",
             "JSFunction",
-            "KtNamedFunction"
+            "KtNamedFunction",
+            "RsFunction"
         )
 
         var parent = element.parent

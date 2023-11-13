@@ -32,7 +32,7 @@ intellij {
     this.downloadSources.set(true)
 
 
-    plugins.set(listOf("JavaScript", "org.jetbrains.kotlin"))
+    plugins.set(listOf("JavaScript", "org.jetbrains.kotlin", "com.jetbrains.rust:232.20527.39"))
 }
 
 tasks {
