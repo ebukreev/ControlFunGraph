@@ -15,11 +15,12 @@ repositories {
 
 dependencies {
     implementation("guru.nidi.com.kitfox:svgSalamander:1.1.3")
-    implementation(project(mapOf("path" to ":kotlin-cfg")))
     implementation("guru.nidi:graphviz-kotlin:0.18.1") {
         exclude(group = "org.slf4j", module = "slf4j-api")
     }
+    implementation(project(mapOf("path" to ":kotlin-cfg")))
     implementation(project(mapOf("path" to ":rust-cfg")))
+    implementation(project(mapOf("path" to ":js-cfg")))
 }
 
 // Configure Gradle IntelliJ Plugin
