@@ -5,7 +5,11 @@ import com.intellij.openapi.actionSystem.ActionUpdateThread
 import com.intellij.openapi.actionSystem.AnAction
 import com.intellij.openapi.actionSystem.AnActionEvent
 import com.intellij.openapi.actionSystem.PlatformCoreDataKeys.*
+import com.intellij.openapi.project.Project
+import com.intellij.openapi.wm.ToolWindowManager
 import com.intellij.psi.PsiElement
+import com.kitfox.svg.SVGUniverse
+import ru.itmo.controlfungraphintellij.ui.FunToolWindowFactory
 
 class ShowCfg : AnAction() {
     override fun update(e: AnActionEvent) {
@@ -14,7 +18,18 @@ class ShowCfg : AnAction() {
 
     override fun actionPerformed(e: AnActionEvent) {
         val methodOrFunction = getMethodOrFunctionFromEvent(e)
+
+        renderCfg(methodOrFunction?.text, e.project!!)
         println(methodOrFunction?.text ?: "null!")
+    }
+
+    private fun renderCfg(functionText: String?, project: Project) {
+        val funToolWindow = ToolWindowManager.getInstance(project).getToolWindow("Control Fun Graph")!!
+        val svgPanel = (funToolWindow.contentManager.getContent(0)!!.component
+                as FunToolWindowFactory.FunToolWindowPanel).graphContentPanel
+
+        // TODO determine language, render svg and set here
+        svgPanel.svgUniverse = SVGUniverse() //.also { it.loadSVG() }
     }
 
     private fun getMethodOrFunctionFromEvent(e: AnActionEvent): PsiElement? {
