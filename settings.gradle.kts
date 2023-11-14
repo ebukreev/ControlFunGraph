@@ -4,6 +4,7 @@ include(
     "control-fun-graph-intellij",
     "kotlin-cfg",
     "rust-cfg",
+    "js-cfg",
     "csharp-cfg"
 )
 
