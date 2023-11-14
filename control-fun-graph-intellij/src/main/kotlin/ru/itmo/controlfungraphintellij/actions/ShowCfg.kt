@@ -8,7 +8,9 @@ import com.intellij.openapi.actionSystem.PlatformCoreDataKeys.*
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.wm.ToolWindowManager
 import com.intellij.psi.PsiElement
-import com.kitfox.svg.SVGUniverse
+import guru.nidi.graphviz.engine.Format
+import guru.nidi.graphviz.engine.Graphviz
+import org.jetbrains.kotlin.idea.KotlinLanguage
 import ru.itmo.controlfungraphintellij.ui.FunToolWindowFactory
 
 class ShowCfg : AnAction() {
@@ -19,17 +21,27 @@ class ShowCfg : AnAction() {
     override fun actionPerformed(e: AnActionEvent) {
         val methodOrFunction = getMethodOrFunctionFromEvent(e)
 
-        renderCfg(methodOrFunction?.text, e.project!!)
+        val psiFile = e.getData(PSI_FILE) ?: return
+        val lang = psiFile.language
+
+        renderCfg(methodOrFunction?.text, e.project!!, lang)
         println(methodOrFunction?.text ?: "null!")
     }
 
-    private fun renderCfg(functionText: String?, project: Project) {
+    private fun renderCfg(functionText: String?, project: Project, language: Language) {
         val funToolWindow = ToolWindowManager.getInstance(project).getToolWindow("Control Fun Graph")!!
         val svgPanel = (funToolWindow.contentManager.getContent(0)!!.component
                 as FunToolWindowFactory.FunToolWindowPanel).graphContentPanel
 
-        // TODO determine language, render svg and set here
-        svgPanel.svgUniverse = SVGUniverse() //.also { it.loadSVG() }
+        if (language.id == "kotlin") {
+            val dotText = Entrypoint.buildCfg(functionText!!)
+            val dotFile = kotlin.io.path.createTempFile("", ".dot").toFile().apply {
+                deleteOnExit()
+                Graphviz.fromString(dotText).render(Format.SVG).toFile(this)
+            }
+
+            svgPanel.setSvgURI(dotFile.toURI())
+        }
     }
 
     private fun getMethodOrFunctionFromEvent(e: AnActionEvent): PsiElement? {

@@ -19,7 +19,10 @@ class FunToolWindowFactory : ToolWindowFactory, DumbAware {
     }
 
     class FunToolWindowPanel : JPanel() {
-        val graphContentPanel = SVGPanel()
+        val graphContentPanel = SVGPanel().apply {
+            setAntiAlias(true)
+            setAutosize(SVGPanel.AUTOSIZE_NONE)
+        }
         private val scrollPane = JBScrollPane(graphContentPanel)
 
         init {

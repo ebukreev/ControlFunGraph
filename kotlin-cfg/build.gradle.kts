@@ -13,7 +13,9 @@ repositories {
 
 dependencies {
     implementation("com.github.cretz.kastree:kastree-ast-psi:0.4.0")
-    implementation("guru.nidi:graphviz-kotlin:0.18.1")
+    implementation("guru.nidi:graphviz-kotlin:0.18.1") {
+        exclude(group = "org.slf4j", module = "slf4j-api")
+    }
     implementation(kotlin("stdlib"))
 
     testImplementation(kotlin("test"))

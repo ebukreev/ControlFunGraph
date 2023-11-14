@@ -17,12 +17,12 @@ import org.jetbrains.kotlin.psi.KtFile
 import org.jetbrains.kotlin.psi.psiUtil.startOffset
 
 object Entrypoint {
-    fun buildCfg(code: String) {
+    fun buildCfg(code: String): String {
         val fileAst = parseCodeWithPos(code)
         val builder = CfgBuilder(fileAst.decls.first() as Node.Decl.Func)
         val graph = builder.build()
 
-        graph.render(Format.DOT).toOutputStream(System.out)
+        return graph.render(Format.DOT).toString()
     }
 
     private fun parseCodeWithPos(code: String) = Parser(object : Converter() {
