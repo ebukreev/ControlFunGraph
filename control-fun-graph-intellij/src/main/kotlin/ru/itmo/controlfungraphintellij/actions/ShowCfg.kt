@@ -11,6 +11,7 @@ import com.intellij.psi.PsiElement
 import guru.nidi.graphviz.engine.Format
 import guru.nidi.graphviz.engine.Graphviz
 import ru.itmo.controlfungraphintellij.ui.FunToolWindowFactory
+import java.io.File
 
 class ShowCfg : AnAction() {
     override fun update(e: AnActionEvent) {
@@ -37,10 +38,11 @@ class ShowCfg : AnAction() {
         val dotText = when (language.id) {
             "kotlin" -> KotlinCfgEntrypoint.buildCfg(functionText)
             "Rust" -> RustCfgEntrypoint.buildCfg(functionText)
+            "ECMAScript 6" -> JsCfgEntrypoint.buildCfg(functionText)
             else -> return
         }
 
-        val dotFile = kotlin.io.path.createTempFile("", ".dot").toFile().apply {
+        val dotFile = File.createTempFile("cfg-intellij", ".dot").apply {
             deleteOnExit()
             Graphviz.fromString(dotText).render(Format.SVG).toFile(this)
         }
