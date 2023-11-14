@@ -6,8 +6,7 @@ import com.intellij.openapi.wm.ToolWindow
 import com.intellij.openapi.wm.ToolWindowFactory
 import com.intellij.ui.components.JBScrollPane
 import com.intellij.ui.content.ContentFactory
-import com.intellij.util.ui.JBEmptyBorder
-import javax.swing.JLabel
+import com.kitfox.svg.app.beans.SVGPanel
 import javax.swing.JPanel
 import javax.swing.SpringLayout
 
@@ -19,8 +18,8 @@ class FunToolWindowFactory : ToolWindowFactory, DumbAware {
         toolWindow.contentManager.addContent(content)
     }
 
-    private class FunToolWindowPanel : JPanel() {
-        private val graphContentPanel = JPanel() // TODO
+    class FunToolWindowPanel : JPanel() {
+        val graphContentPanel = SVGPanel()
         private val scrollPane = JBScrollPane(graphContentPanel)
 
         init {
