@@ -14,6 +14,8 @@ repositories {
 dependencies {
     implementation("com.github.cretz.kastree:kastree-ast-psi:0.4.0")
     implementation("guru.nidi:graphviz-kotlin:0.18.1")
+    implementation(kotlin("stdlib"))
+
     testImplementation(kotlin("test"))
 }
 
