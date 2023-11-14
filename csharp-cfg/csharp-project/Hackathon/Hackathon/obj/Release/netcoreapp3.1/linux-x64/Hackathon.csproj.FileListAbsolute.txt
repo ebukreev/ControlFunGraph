@@ -1,0 +1,5 @@
+D:\RiderProjects\Hackathon\Hackathon\obj\Release\netcoreapp3.1\linux-x64\Hackathon.csproj.AssemblyReference.cache
+D:\RiderProjects\Hackathon\Hackathon\obj\Release\netcoreapp3.1\linux-x64\Hackathon.GeneratedMSBuildEditorConfig.editorconfig
+D:\RiderProjects\Hackathon\Hackathon\obj\Release\netcoreapp3.1\linux-x64\Hackathon.AssemblyInfoInputs.cache
+D:\RiderProjects\Hackathon\Hackathon\obj\Release\netcoreapp3.1\linux-x64\Hackathon.AssemblyInfo.cs
+D:\RiderProjects\Hackathon\Hackathon\obj\Release\netcoreapp3.1\linux-x64\Hackathon.csproj.CoreCompileInputs.cache

@@ -1,0 +1,2 @@
+D:\RiderProjects\Hackathon\Hackathon\bin\Release\net6.0\win-x64\publish\Hackathon.pdb
+D:\RiderProjects\Hackathon\Hackathon\bin\Release\net6.0\win-x64\publish\Hackathon.exe
