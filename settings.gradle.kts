@@ -3,7 +3,8 @@ rootProject.name = "control-fun-graph"
 include(
     "control-fun-graph-intellij",
     "kotlin-cfg",
-    "rust-cfg"
+    "rust-cfg",
+    "js-cfg"
 )
 
 pluginManagement {
