@@ -16,7 +16,7 @@ import org.jetbrains.kotlin.idea.KotlinFileType
 import org.jetbrains.kotlin.psi.KtFile
 import org.jetbrains.kotlin.psi.psiUtil.startOffset
 
-object Entrypoint {
+object KotlinCfgEntrypoint {
     fun buildCfg(code: String): String {
         val fileAst = parseCodeWithPos(code)
         val builder = CfgBuilder(fileAst.decls.first() as Node.Decl.Func)

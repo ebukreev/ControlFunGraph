@@ -19,6 +19,7 @@ dependencies {
     implementation("guru.nidi:graphviz-kotlin:0.18.1") {
         exclude(group = "org.slf4j", module = "slf4j-api")
     }
+    implementation(project(mapOf("path" to ":rust-cfg")))
 }
 
 // Configure Gradle IntelliJ Plugin

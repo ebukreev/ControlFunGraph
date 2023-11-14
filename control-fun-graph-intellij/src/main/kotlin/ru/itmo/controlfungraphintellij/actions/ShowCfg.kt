@@ -10,7 +10,6 @@ import com.intellij.openapi.wm.ToolWindowManager
 import com.intellij.psi.PsiElement
 import guru.nidi.graphviz.engine.Format
 import guru.nidi.graphviz.engine.Graphviz
-import org.jetbrains.kotlin.idea.KotlinLanguage
 import ru.itmo.controlfungraphintellij.ui.FunToolWindowFactory
 
 class ShowCfg : AnAction() {
@@ -33,15 +32,19 @@ class ShowCfg : AnAction() {
         val svgPanel = (funToolWindow.contentManager.getContent(0)!!.component
                 as FunToolWindowFactory.FunToolWindowPanel).graphContentPanel
 
-        if (language.id == "kotlin") {
-            val dotText = Entrypoint.buildCfg(functionText!!)
-            val dotFile = kotlin.io.path.createTempFile("", ".dot").toFile().apply {
-                deleteOnExit()
-                Graphviz.fromString(dotText).render(Format.SVG).toFile(this)
-            }
+        functionText ?: return
 
-            svgPanel.setSvgURI(dotFile.toURI())
+        val dotText = when (language.id) {
+            "kotlin" -> KotlinCfgEntrypoint.buildCfg(functionText)
+            "Rust" -> RustCfgEntrypoint.buildCfg(functionText)
+            else -> return
         }
+
+        val dotFile = kotlin.io.path.createTempFile("", ".dot").toFile().apply {
+            deleteOnExit()
+            Graphviz.fromString(dotText).render(Format.SVG).toFile(this)
+        }
+        svgPanel.setSvgURI(dotFile.toURI())
     }
 
     private fun getMethodOrFunctionFromEvent(e: AnActionEvent): PsiElement? {
