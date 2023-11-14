@@ -106,11 +106,11 @@ class DotGenerator {
                 }
             }
 
-            when {
-                this@getDotStyle.isTerminal -> {
-                    append(" color=red")
-                }
-            }
+//            when {
+//                this@getDotStyle.isTerminal -> {
+//                    append(" color=red")
+//                }
+//            }
         }
     }
 
