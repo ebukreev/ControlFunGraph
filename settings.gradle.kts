@@ -1,3 +1,11 @@
+rootProject.name = "control-fun-graph"
+
+include(
+    "control-fun-graph-intellij",
+    "kotlin-cfg",
+    "rust-cfg"
+)
+
 pluginManagement {
     repositories {
         mavenCentral()
@@ -8,5 +16,3 @@ pluginManagement {
 plugins {
     id("org.gradle.toolchains.foojay-resolver-convention") version "0.5.0"
 }
-
-rootProject.name = "kotlin-cfg"
