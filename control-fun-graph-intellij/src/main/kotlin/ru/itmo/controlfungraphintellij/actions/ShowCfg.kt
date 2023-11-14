@@ -1,18 +1,22 @@
 package ru.itmo.controlfungraphintellij.actions
 
+import JsCfgEntrypoint
+import KotlinCfgEntrypoint
+import RustCfgEntrypoint
 import com.intellij.lang.Language
 import com.intellij.openapi.actionSystem.ActionUpdateThread
 import com.intellij.openapi.actionSystem.AnAction
 import com.intellij.openapi.actionSystem.AnActionEvent
-import com.intellij.openapi.actionSystem.PlatformCoreDataKeys.*
+import com.intellij.openapi.actionSystem.PlatformCoreDataKeys.CARET
+import com.intellij.openapi.actionSystem.PlatformCoreDataKeys.PSI_FILE
 import com.intellij.openapi.components.service
 import com.intellij.openapi.project.Project
-import com.intellij.openapi.wm.ToolWindowManager
 import com.intellij.psi.PsiElement
 import guru.nidi.graphviz.engine.Format
 import guru.nidi.graphviz.engine.Graphviz
+import org.apache.batik.anim.dom.SVGDOMImplementation
+import org.w3c.dom.svg.SVGDocument
 import ru.itmo.controlfungraphintellij.services.DotContentService
-import ru.itmo.controlfungraphintellij.ui.CfgPanel
 import java.io.File
 import javax.swing.SwingUtilities
 
@@ -41,7 +45,7 @@ class ShowCfg : AnAction() {
             else -> return
         }
 
-        val dotFile = File.createTempFile("cfg-intellij", ".dot").apply {
+        val dotFile = File.createTempFile("cfg-intellij", ".svg").apply {
             deleteOnExit()
             Graphviz.fromString(dotText).render(Format.SVG).toFile(this)
         }
@@ -49,7 +53,7 @@ class ShowCfg : AnAction() {
         val dotContentService = project.service<DotContentService>()
 
         SwingUtilities.invokeLater {
-            dotContentService.cfgPanel.graphContentPanel.setSvgURI(dotFile.toURI())
+            dotContentService.cfgPanel.graphContentPanel.uri = dotFile.toURI().toString()
         }
     }
 
