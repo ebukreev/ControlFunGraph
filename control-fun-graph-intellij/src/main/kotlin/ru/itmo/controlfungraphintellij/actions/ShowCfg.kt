@@ -45,7 +45,7 @@ class ShowCfg : AnAction() {
             "kotlin" -> KotlinCfgEntrypoint.buildCfg(functionText)
             "Rust" -> RustCfgEntrypoint.buildCfg(functionText)
             "ECMAScript 6" -> JsCfgEntrypoint.buildCfg(functionText)
-            "CSharp" -> org.example.Main.buildCfg(functionText)
+            "C#" -> org.example.Main().buildCfg(functionText)
             else -> return
         }
 
