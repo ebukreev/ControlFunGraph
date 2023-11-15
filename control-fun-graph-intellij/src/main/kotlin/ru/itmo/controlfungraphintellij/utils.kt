@@ -41,8 +41,8 @@ private fun buildTransition(dotFile: String, isKotlin: Boolean): Map<String, Lis
                 childNode = transitionNodes[1].split(" ")[0].split(":")[0].split("[")[0].trim()
             } else {
                 val transitionNodes = trimmedLine.split("->").map { it.trim() }
-                parentNode = transitionNodes[0].trim()
-                childNode = transitionNodes[1].trim().split(" [")[0]
+                parentNode = transitionNodes[0].trim().split("\"")[1]
+                childNode = transitionNodes[1].trim().split(" [")[0].split("\"")[1]
             }
 
             transitions.getOrPut(parentNode, { mutableListOf() }).add(childNode)
