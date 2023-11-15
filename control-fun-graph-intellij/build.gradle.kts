@@ -14,7 +14,10 @@ repositories {
 }
 
 dependencies {
-    implementation("guru.nidi.com.kitfox:svgSalamander:1.1.3")
+    implementation("org.apache.xmlgraphics:batik-swing:1.17") {
+        exclude("xml-apis")
+        exclude("xerces")
+    }
     implementation("guru.nidi:graphviz-kotlin:0.18.1") {
         exclude(group = "org.slf4j", module = "slf4j-api")
     }
