@@ -11,9 +11,11 @@ import com.intellij.openapi.actionSystem.PlatformCoreDataKeys.CARET
 import com.intellij.openapi.actionSystem.PlatformCoreDataKeys.PSI_FILE
 import com.intellij.openapi.components.service
 import com.intellij.openapi.project.Project
+import com.intellij.psi.PsiDocumentManager
 import com.intellij.psi.PsiElement
 import guru.nidi.graphviz.engine.Format
 import guru.nidi.graphviz.engine.Graphviz
+import ru.itmo.controlfungraphintellij.GraphPositionContext
 import ru.itmo.controlfungraphintellij.services.DotContentService
 import java.io.File
 import javax.swing.SwingUtilities
@@ -29,11 +31,13 @@ class ShowCfg : AnAction() {
         val psiFile = e.getData(PSI_FILE) ?: return
         val lang = psiFile.language
 
-        renderCfg(methodOrFunction?.text, e.project!!, lang)
+        val psiDocumentManager = PsiDocumentManager.getInstance(e.project!!)
+        val document = psiDocumentManager.getDocument(psiFile) ?: return
         println(methodOrFunction?.text ?: "null!")
+        renderCfg(methodOrFunction?.text, e.project!!, lang, document.getLineNumber(methodOrFunction!!.textOffset))
     }
 
-    private fun renderCfg(functionText: String?, project: Project, language: Language) {
+    private fun renderCfg(functionText: String?, project: Project, language: Language, methodFirstLine: Int) {
         functionText ?: return
 
         val dotText = when (language.id) {
@@ -52,6 +56,7 @@ class ShowCfg : AnAction() {
 
         SwingUtilities.invokeLater {
             dotContentService.cfgPanel.graphContentPanel.uri = dotFile.toURI().toString()
+            GraphPositionContext.createForMethodLine(methodFirstLine)
         }
     }
 
