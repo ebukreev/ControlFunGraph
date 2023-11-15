@@ -2,11 +2,14 @@ package ru.itmo.controlfungraphintellij.ui
 
 import org.apache.batik.swing.JSVGCanvas
 import org.apache.batik.swing.JSVGScrollPane
+import org.apache.batik.swing.svg.JSVGComponent.ALWAYS_DYNAMIC
 import javax.swing.JPanel
 import javax.swing.SpringLayout
 
 class CfgPanel : JPanel() {
-    val graphContentPanel = JSVGCanvas()
+    val graphContentPanel = JSVGCanvas().also {
+        it.setDocumentState(ALWAYS_DYNAMIC)
+    }
     private val scrollPane = JSVGScrollPane(graphContentPanel)
 
     init {
