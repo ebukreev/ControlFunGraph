@@ -36,17 +36,16 @@ intellij {
         "rider" -> {
             version.set("2023.2.3")
             type.set("RD")
+            plugins.set(listOf())
         }
         "idea" -> {
             version.set("2023.2.5")
             type.set("IU")
+            plugins.set(listOf("JavaScript", "org.jetbrains.kotlin", "com.jetbrains.rust:232.20527.39"))
         }
         else -> error("unknown cfg_ide_type=$ideType")
     }
     this.downloadSources.set(true)
-
-
-    plugins.set(listOf("JavaScript", "org.jetbrains.kotlin", "com.jetbrains.rust:232.20527.39"))
 }
 
 tasks {
