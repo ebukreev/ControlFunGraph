@@ -5,7 +5,8 @@ import com.intellij.openapi.editor.EditorFactory
 import com.intellij.openapi.editor.event.CaretEvent
 import com.intellij.openapi.editor.event.CaretListener
 import com.intellij.openapi.util.Disposer
-import org.w3c.dom.svg.SVGPolygonElement
+import org.w3c.dom.Element
+import ru.itmo.controlfungraphintellij.actions.ShowPathFromRootAction
 import ru.itmo.controlfungraphintellij.services.DotContentService
 import java.io.File
 import java.net.URL
@@ -13,16 +14,17 @@ import java.net.URL
 
 object GraphPositionContext {
 
-    private var caretListener: CfgCaretListener? = null
+    var caretListener: CfgCaretListener? = null
     fun createForMethodLine(methodLine: Int) {
         caretListener?.let { EditorFactory.getInstance().eventMulticaster.removeCaretListener(it) }
         caretListener = CfgCaretListener(methodLine)
         EditorFactory.getInstance().eventMulticaster.addCaretListener(caretListener!!, Disposer.newDisposable())
     }
 
-    private class CfgCaretListener(private val methodFirstLine: Int) : CaretListener {
+    class CfgCaretListener(private val methodFirstLine: Int) : CaretListener {
 
-        private var previousElement: SVGPolygonElement? = null
+        private var previousElement: Element? = null
+        var currentNodeTitle: String? = null
 
         override fun caretPositionChanged(event: CaretEvent) {
             val project = event.editor.project ?: return
@@ -38,14 +40,26 @@ object GraphPositionContext {
 
             val gNode = dotContentService.cfgPanel.graphContentPanel.svgDocument.rootElement.getElementById(edgeName)
 
+            val titleNode = gNode.childNodes.item(1)
+            currentNodeTitle = titleNode.textContent
+
             val updater = Runnable {
-                for (i in 0 until gNode.childNodes.length) {
-                    val child = gNode.childNodes.item(i)
-                    if (child is SVGPolygonElement) {
-                        child.setAttributeNS(null, "fill", "green")
-                        previousElement?.setAttributeNS(null, "fill", "none")
-                        previousElement = child
+                val titles = dotContentService.cfgPanel.graphContentPanel.svgDocument.rootElement
+                    .getElementsByTagName("title")
+                ShowPathFromRootAction.previousTransition?.let {
+                    for (i in 0 until titles.length) {
+                        if (it.contains(titles.item(i).textContent)) {
+                            (titles.item(i).parentNode.childNodes.item(3) as Element)
+                                .setAttributeNS(null, "fill", "none")
+                        }
                     }
+                }
+
+                val figureNode = gNode.childNodes.item(3) as Element
+                if (figureNode != previousElement) {
+                    figureNode.setAttributeNS(null, "fill", "green")
+                    previousElement?.setAttributeNS(null, "fill", "none")
+                    previousElement = figureNode
                 }
             }
 
