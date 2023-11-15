@@ -73,11 +73,3 @@ tasks {
         token.set(System.getenv("PUBLISH_TOKEN"))
     }
 }
-
-sourceSets {
-    main {
-        resources {
-            srcDirs(project.rootProject.rootDir.resolve("./csharp-cfg/src/main/resources/").absolutePath)
-        }
-    }
-}
