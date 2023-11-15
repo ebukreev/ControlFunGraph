@@ -147,7 +147,7 @@ class CFGBuilder(private val program: Program) {
         val name = "s$id"
         val escapedText = text.replace("\"", "\\\"");
 
-        settings.add("""$name[label="$escapedText", shape="$shape", linenumber=$lineNumber];""")
+        settings.add("""$name[label="$escapedText", shape="$shape", comment="$lineNumber"];""")
     }
 
     private fun addEdge(from: Int, to: Int, label: String = "") {
