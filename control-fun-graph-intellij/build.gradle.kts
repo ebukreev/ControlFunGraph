@@ -73,3 +73,9 @@ tasks {
         token.set(System.getenv("PUBLISH_TOKEN"))
     }
 }
+
+kotlin {
+    jvmToolchain {
+        (this as JavaToolchainSpec).languageVersion.set(JavaLanguageVersion.of(20))
+    }
+}
