@@ -24,6 +24,7 @@ dependencies {
     implementation(project(mapOf("path" to ":kotlin-cfg")))
     implementation(project(mapOf("path" to ":rust-cfg")))
     implementation(project(mapOf("path" to ":js-cfg")))
+    implementation(project(mapOf("path" to ":csharp-cfg")))
 }
 
 // Configure Gradle IntelliJ Plugin

@@ -4,7 +4,7 @@
     <ExternalSystemSettings>
       <option name="env">
         <map>
-          <entry key="cfg_ide_type" value="idea" />
+          <entry key="cfg_ide_type" value="rider" />
         </map>
       </option>
       <option name="executionName" />
@@ -24,7 +24,6 @@
     <ExternalSystemDebugServerProcess>true</ExternalSystemDebugServerProcess>
     <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
     <DebugAllEnabled>false</DebugAllEnabled>
-    <RunAsTest>false</RunAsTest>
     <method v="2" />
   </configuration>
 </component>

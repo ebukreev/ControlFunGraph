@@ -3,7 +3,9 @@ package org.example;
 import java.io.*;
 
 public class Main {
-    public static void createCsharpCfg(String inputCsharpCode) {
+    public static String buildCfg(String inputCsharpCode) {
+
+        StringBuilder result = new StringBuilder();
 
         try {
             String os = System.getProperty("os.name").toLowerCase();
@@ -36,8 +38,8 @@ public class Main {
 
                 csharpProgramPath = curFile.getAbsolutePath();
             } else {
-                System.out.println("Unsupported operating system");
-                return;
+                //System.out.println("Unsupported operating system");
+                return "Unsupported operating system";
             }
 
             // Создаем процесс для выполнения программы на C#
@@ -55,7 +57,8 @@ public class Main {
             BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
             String line;
             while ((line = reader.readLine()) != null) {
-                System.out.println(line);
+                result.append(line).append("\n");
+                //System.out.println(line);
             }
 
             // Ждем завершения процесса
@@ -64,6 +67,8 @@ public class Main {
         } catch (IOException | InterruptedException e) {
             e.printStackTrace();
         }
+
+        return result.toString();
     }
 
     public static void main(String[] args) {
@@ -101,6 +106,6 @@ public class Main {
                         "!!!END!!!";
 
         // Тестируем функцию
-        createCsharpCfg(inputString);
+        System.out.println(buildCfg(inputString));
     }
 }
