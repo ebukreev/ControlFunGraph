@@ -14,8 +14,6 @@ import com.intellij.openapi.project.Project
 import com.intellij.psi.PsiElement
 import guru.nidi.graphviz.engine.Format
 import guru.nidi.graphviz.engine.Graphviz
-import org.apache.batik.anim.dom.SVGDOMImplementation
-import org.w3c.dom.svg.SVGDocument
 import ru.itmo.controlfungraphintellij.services.DotContentService
 import java.io.File
 import javax.swing.SwingUtilities
