@@ -16,6 +16,7 @@ import com.intellij.psi.PsiElement
 import guru.nidi.graphviz.engine.Format
 import guru.nidi.graphviz.engine.Graphviz
 import ru.itmo.controlfungraphintellij.GraphPositionContext
+import ru.itmo.controlfungraphintellij.buildTransitionTree
 import ru.itmo.controlfungraphintellij.services.DotContentService
 import java.io.File
 import javax.swing.SwingUtilities
@@ -46,6 +47,8 @@ class ShowCfg : AnAction() {
             "ECMAScript 6" -> JsCfgEntrypoint.buildCfg(functionText)
             else -> return
         }
+
+        ShowPathFromRootAction.transitionsTree = buildTransitionTree(dotText, language.id == "kotlin")
 
         val dotFile = File.createTempFile("cfg-intellij", ".svg").apply {
             deleteOnExit()
