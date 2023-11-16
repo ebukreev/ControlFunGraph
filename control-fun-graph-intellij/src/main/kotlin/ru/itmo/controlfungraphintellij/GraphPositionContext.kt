@@ -61,7 +61,7 @@ object GraphPositionContext {
 
                 val figureNode = gNode.childNodes.item(3) as Element
                 if (figureNode != previousElement) {
-                    figureNode.setAttributeNS(null, "fill", "green")
+                    figureNode.setAttributeNS(null, "fill", "#66FFB2")
                     previousElement?.setAttributeNS(null, "fill", "none")
                     previousElement = figureNode
                 }

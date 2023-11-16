@@ -59,7 +59,7 @@ class ShowPathFromRootAction : AnAction() {
             for (i in 0 until titles.length) {
                 if (transition.contains(titles.item(i).textContent)) {
                     (titles.item(i).parentNode.childNodes.item(3) as Element)
-                        .setAttributeNS(null, "fill", "green")
+                        .setAttributeNS(null, "fill", "#66FFB2")
                 }
             }
         }
