@@ -1,5 +1,6 @@
 plugins {
     kotlin("jvm") version "1.9.0"
+    application
 }
 
 group = "me.vldf"
@@ -21,4 +22,8 @@ tasks.test {
 
 kotlin {
     jvmToolchain(17)
+}
+
+application {
+    mainClass = "MainKt"
 }
