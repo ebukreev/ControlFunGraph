@@ -1,55 +1,49 @@
 package org.example;
 
 import java.io.*;
+import java.net.URISyntaxException;
+import java.nio.file.Path;
 
 public class Main {
-    public static String buildCfg(String inputCsharpCode) {
+    Path binaryPath;
 
+    public Main() throws IOException, URISyntaxException, InterruptedException {
+        initializeBinary();
+    }
+
+    private void initializeBinary() throws IOException, InterruptedException {
+        String os = System.getProperty("os.name").toLowerCase();
+        // Определяем путь к исполняемому файлу программы на C# в зависимости от операционной системы
+
+        if (os.contains("win")) {
+            // Windows
+            binaryPath = Path.of("%APPDATA%").resolve("csharp-cfg/Hackathon.exe");
+
+        } else {
+            // Linux or macos
+            binaryPath = Path.of(System.getProperty("user.home")).resolve("csharp-cfg/Hackathon");
+
+            // Создаем процесс для выполнения chmod +x
+            Process chmodProcess = new ProcessBuilder("chmod", "+x", binaryPath.toAbsolutePath().toString()).start();
+            chmodProcess.waitFor();
+        }
+    }
+
+    public String buildCfg(String inputCsharpCode) {
         StringBuilder result = new StringBuilder();
 
         try {
-            String os = System.getProperty("os.name").toLowerCase();
-
-            // Определяем путь к исполняемому файлу программы на C# в зависимости от операционной системы
-            String csharpProgramPath;
-            if (os.contains("win")) {
-                // Windows
-                csharpProgramPath = "csharp-cfg\\src\\main\\java\\org\\example\\net6.0\\win-x64\\Hackathon.exe";
-            } else if (os.contains("nix") || os.contains("nux")) {
-                // TODO
-                // Linux
-                var filePath = "net6.0/linux-x64/Hackathon";
-                var curFile = new File(filePath);
-
-                // Создаем процесс для выполнения chmod +x
-                Process chmodProcess = new ProcessBuilder("chmod", "+x", curFile.getAbsolutePath()).start();
-                chmodProcess.waitFor();
-
-                csharpProgramPath = curFile.getAbsolutePath();
-
-            } else if (os.contains("mac")) {
-                // MacOS
-                var filePath = "net6.0/osx-x64/Hackathon";
-                var curFile = new File(filePath);
-
-                // Создаем процесс для выполнения chmod +x
-                Process chmodProcess = new ProcessBuilder("chmod", "+x", curFile.getAbsolutePath()).start();
-                chmodProcess.waitFor();
-
-                csharpProgramPath = curFile.getAbsolutePath();
-            } else {
-                //System.out.println("Unsupported operating system");
-                return "Unsupported operating system";
-            }
-
             // Создаем процесс для выполнения программы на C#
-            Process process = new ProcessBuilder(csharpProgramPath).start();
+            var pb = new ProcessBuilder(binaryPath.toAbsolutePath().toString());
+            pb.directory(binaryPath.getParent().toFile());
+            Process process = pb.start();
 
             // Получаем входной и выходной потоки для взаимодействия с терминалом
             OutputStream outputStream = process.getOutputStream();
             InputStream inputStream = process.getInputStream();
+            InputStream errStream = process.getErrorStream();
 
-            outputStream.write(inputCsharpCode.getBytes());
+            outputStream.write((inputCsharpCode + "\n!!!END!!!").getBytes());
             outputStream.flush();
             outputStream.close();
 
@@ -58,7 +52,13 @@ public class Main {
             String line;
             while ((line = reader.readLine()) != null) {
                 result.append(line).append("\n");
-                //System.out.println(line);
+                System.out.println(line);
+            }
+
+            reader = new BufferedReader(new InputStreamReader(errStream));
+            while ((line = reader.readLine()) != null) {
+                //result.append(line).append("\n");
+                System.err.println(line);
             }
 
             // Ждем завершения процесса
@@ -75,37 +75,39 @@ public class Main {
 
         // Передаем строку в программу на C#
         String inputString =
-                "private static int TestContinue(int x, int y)\n" +
-                        "{\n" +
-                        "    int c = 10;\n" +
-                        "    c++;\n" +
-                        "    int a = 5;\n" +
-                        "    String b = \"str\";\n" +
-                        "    for (int k = 0; k < a; k++)\n" +
-                        "    {\n" +
-                        "        for (int i = 1; i < c; i++)\n" +
-                        "        {\n" +
-                        "            if (c != a)\n" +
-                        "            {\n" +
-                        "                continue;\n" +
-                        "            }\n" +
-                        "             else\n" +
-                        "             {\n" +
-                        "                   if (c == a)\n" +
-                        "                   {\n" +
-                        "                       break;\n" +
-                        "                   }\n" +
-                        "                c++;\n" +
-                        "            }\n" +
-                        "            c--;\n" +
-                        "        }\n" +
-                        "    }\n" +
-                        "    int result = c;\n" +
-                        "    return result;\n" +
-                        "}\n" +
-                        "!!!END!!!";
+                """
+                        private static int Test2(int x, int y)
+                        {
+                            var c = 0;
+                            c++;
+                            int a = 5;
+                            var b = "str";
+                                                
+                            for (var i = 0; i < a; i--)
+                            {
+                                c += a;
+                                if (c < 1)
+                                {
+                                    c++;
+                                    if (a < 12)
+                                    {
+                                        a += 1;
+                                    }
+                                }
+                                                
+                                a -= c;
+                            }
+                                                
+                            var result = c;
+                            return result;
+                        }
+                        """;
 
         // Тестируем функцию
-        System.out.println(buildCfg(inputString));
+        try {
+            System.out.println(new Main().buildCfg(inputString));
+        } catch (IOException | URISyntaxException | InterruptedException e) {
+            throw new RuntimeException(e);
+        }
     }
 }
