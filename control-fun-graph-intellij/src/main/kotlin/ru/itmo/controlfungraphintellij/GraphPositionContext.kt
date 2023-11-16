@@ -44,6 +44,10 @@ object GraphPositionContext {
             currentNodeTitle = titleNode.textContent
 
             val updater = Runnable {
+
+                dotContentService.contentPanel.changeCurrentPath(0,
+                    ShowPathFromRootAction.transitionsTree?.get(currentNodeTitle)!!.size)
+
                 val titles = dotContentService.cfgPanel.graphContentPanel.svgDocument.rootElement
                     .getElementsByTagName("title")
                 ShowPathFromRootAction.previousTransition?.let {
