@@ -4,8 +4,7 @@ import cfg.nodes.FileCfgNode
 import cfg.nodes.FunctionCfgNode
 import cfg.nodes.statements.AbstractStatement
 import cfg.nodes.statements.IfStatement
-import cfg.nodes.statements.blocks.ExpressionConditionType
-import cfg.nodes.statements.blocks.StatementsBlock
+import cfg.nodes.statements.blocks.*
 import com.oracle.js.parser.ir.Node
 
 class DotGenerator {
@@ -53,7 +52,7 @@ class DotGenerator {
         val nodeSourceText = buildString {
             append(block.graphId)
             append("[label = \"")
-            append(blockAsText)
+            append(blockAsText.replace("\"", "\\\""))
             append("\" ")
             append(dotStyle)
             append(" ")
@@ -115,11 +114,13 @@ class DotGenerator {
     }
 
     private fun StringBuilder.addBlockEdges(block: StatementsBlock) {
-        for (successor in block.successors) {
+        if (block.isEntry || block.isExit) return
+
+        for (successor in block.findNormalSuccessors()) {
             appendLine("${block.graphId} -> ${successor.graphId}:n")
         }
 
-        for ((type, successorBlock) in block.conditionalSuccessors) {
+        for ((type, successorBlock) in block.findNormalConditionalSuccessors()) {
             if (type is ExpressionConditionType) {
                 appendLine("${block.graphId}:w -> " +
                         "${successorBlock.graphId} [label=\"${type.expression}\"]")
@@ -129,7 +130,7 @@ class DotGenerator {
             }
         }
 
-        for (successor in block.backSuccessors) {
+        for (successor in block.findNormalBackSuccessors()) {
             appendLine("${block.graphId} -> ${successor.graphId}:s")
         }
     }
