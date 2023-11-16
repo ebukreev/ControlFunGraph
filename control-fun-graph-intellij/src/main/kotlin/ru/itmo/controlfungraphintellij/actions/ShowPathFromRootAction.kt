@@ -17,6 +17,10 @@ class ShowPathFromRootAction : AnAction() {
         var currentIndex = -1
     }
     override fun actionPerformed(e: AnActionEvent) {
+       actionPerformed(e, false)
+    }
+
+    fun actionPerformed(e: AnActionEvent, previousPath: Boolean) {
         val currentNodeTitle = GraphPositionContext.caretListener?.currentNodeTitle ?: return
 
         if (previousNodeTitle != currentNodeTitle) {
@@ -26,11 +30,18 @@ class ShowPathFromRootAction : AnAction() {
             currentIndex = -1
         }
 
-        currentIndex = ++currentIndex % transitions!!.size
+        if (previousPath) {
+            --currentIndex
+            if (currentIndex < 0) currentIndex = transitions!!.size - 1
+        } else {
+            currentIndex = ++currentIndex % transitions!!.size
+        }
 
         val transition = transitions!![currentIndex]
 
         val dotContentService = e.project!!.service<DotContentService>()
+
+        dotContentService.contentPanel.changeCurrentPath(currentIndex + 1, transitions!!.size)
 
         val titles = dotContentService.cfgPanel.graphContentPanel.svgDocument.rootElement
             .getElementsByTagName("title")
