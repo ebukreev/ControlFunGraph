@@ -17,7 +17,7 @@ public class Main {
 
         if (os.contains("win")) {
             // Windows
-            binaryPath = Path.of("%APPDATA%").resolve("csharp-cfg/Hackathon.exe");
+            binaryPath = Path.of(System.getenv("APPDATA")).resolve("csharp-cfg/Hackathon.exe");
 
         } else {
             // Linux or macos
